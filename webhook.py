@@ -1,5 +1,10 @@
 from flask import Flask, request, jsonify
 import os
+import requests
+import pygame
+import dotenv
+
+dotenv.load_dotenv()
 
 whatsapp_token = os.environ.get("WHATSAPP_TOKEN")
 verify_token = os.environ.get("VERIFY_TOKEN")
@@ -10,6 +15,17 @@ def webhook_receiver():
     data = request.json  # Get the JSON data from the incoming request
     # Process the data and perform actions based on the event
     print("Received webhook data:", data)
+    print("\n")
+    message = data["entry"][0]["changes"][0]["value"]["messages"][0]
+    if(message["type"] == "audio"):
+        print(message["audio"]["id"])
+        url_request = requests.get(f'https://graph.facebook.com/v20.0/{message["audio"]["id"]}/', headers={'Authorization': f'Bearer {whatsapp_token}', 'Accept': 'application/json'})
+        url_request = url_request.json()['url']
+        print(url_request)
+
+        audio_request = requests.get(url_request, headers={'Authorization': f'Bearer {whatsapp_token}', 'Accept': 'application/json'})
+        print(audio_request)
+
     return jsonify({'message': 'Webhook received successfully'}), 200
 
 @app.route('/webhook', methods=['GET'])
