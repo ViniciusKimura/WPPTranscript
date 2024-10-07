@@ -1,13 +1,11 @@
 from flask import Flask, request, jsonify
 import os
 import dotenv
-import gpt_api
+import openai_api
 import meta_api
 
 dotenv.load_dotenv()
 list_id = [] #list containing the messages IDs
-
-openai_client = gpt_api.initClient() #getting OPENAI client
 
 verify_token = os.environ.get("VERIFY_TOKEN")
 
@@ -30,7 +28,7 @@ def webhook_receiver():
         # Sends the audio id to a function that will return the audio byte data
         audio_request = meta_api.audio_file(audio_id)
         #With said byte information, we send it to my othor code to handle the OpenAI request
-        transcripted_text = gpt_api.transcript(openai_client, audio_request)
+        transcripted_text = openai_api.transcript(audio_request)
         meta_api.send_message(transcripted_text)
     
     return jsonify({'message': 'Webhook received successfully'}), 200
