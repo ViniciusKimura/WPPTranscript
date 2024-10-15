@@ -41,4 +41,4 @@ def gpt_prompt(prompt: str) -> str:
     return chat_completion.choices[0].message.content
 
 if __name__ == "__main__":
-    print("Dont work alone")
+    print("Error: Use it as a import")

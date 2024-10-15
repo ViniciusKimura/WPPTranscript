@@ -40,4 +40,4 @@ def audio_file(audio_id: str) -> str:
 
 
 if __name__ == "__main__":
-    print("Dont work alone")
+    print("Error: Use it as a import")
