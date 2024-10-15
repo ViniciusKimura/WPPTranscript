@@ -35,7 +35,6 @@ def webhook_receiver():
             list_id.append(audio_id) #Puts the message id on the list so it does not run again the same message
             # Sends the audio id to a function that will return the audio byte data
             audio_request = meta_api.audio_file(audio_id)
-            meta_api.send_message("Sending audio to ")
             #With said byte information, we send it to my othor code to handle the OpenAI request
             transcripted_text = openai_api.transcript(audio_request)
             waiting_response = True
